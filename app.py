@@ -1,11 +1,13 @@
 from flask import Flask, render_template
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user, login_required
 from datetime import timedelta
 
 from models.user_model import db, User
 from routes.user_routes import user_bp
 from routes.auth_routes import auth_bp
 from routes.protected_routes import protected_bp
+from routes.admin_routes import admin_bp
+from routes.moderator_routes import moderator_bp
 from views.user_views import list_users
 from flask_migrate import Migrate
 app = Flask(__name__)
@@ -37,6 +39,9 @@ app.register_blueprint(user_bp)
 #############################################
 app.register_blueprint(auth_bp)
 app.register_blueprint(protected_bp)
+app.register_blueprint(admin_bp)
+app.register_blueprint(moderator_bp)
+
 
 # Initialize Flask-Login
 login_manager = LoginManager()
@@ -51,6 +56,11 @@ def load_user(user_id):
 @app.route('/show_users')
 def show_users():
     return list_users()
+
+@app.route('/profile')
+@login_required
+def profile():
+    return f"Hello, {current_user.username}!"
 
 @app.route('/')
 def homepage():

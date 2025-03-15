@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     phone = db.Column(db.String(15), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.String(50), default='user')  # Add a role field
 
     # Hash the password
     #The set_password method is used to hash a plain-text password and store the hash in the password_hash field of the User model.
@@ -27,3 +28,9 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+    def is_admin(self):
+        return self.role == 'admin'
+
+    def is_moderator(self):
+        return self.role == 'moderator'
