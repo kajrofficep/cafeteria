@@ -44,3 +44,7 @@ curl -X PUT http://127.0.0.1:5000/profile/update \
 -H "Content-Type: application/json" \
 -d '{"full_name": "Updated Name", "email": "updated@example.com"}'
 ```
+
+curl -X PUT http://127.0.0.1:5000/profile \
+-H "Content-Type: application/json" \
+-d '{"new_password": "new_secure_password"}'
