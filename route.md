@@ -17,3 +17,15 @@ GET /users
 ```markdown
 curl http://127.0.0.1:5000/users
 ```
+```markdown
+curl -X POST http://127.0.0.1:5000/login \
+-H "Content-Type: application/json" \
+-d '{"username": "john_doe", "password": "securepassword123"}'
+```
+```markdown
+curl http://127.0.0.1:5000/protected
+```
+
+```markdown
+curl -X POST http://127.0.0.1:5000/logout
+```

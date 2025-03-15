@@ -4,7 +4,6 @@ from flask import Blueprint, request, jsonify
 from models.user_model import User, db
 # Create a Blueprint named 'user'
 user_bp = Blueprint('user', __name__)
-
 # Define a route for creating a user
 @user_bp.route('/create_user', methods=['POST'])
 def create_user():

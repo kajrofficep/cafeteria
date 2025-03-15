@@ -1,6 +1,11 @@
 from flask import Flask, render_template
-from models.user_model import db
+from flask_login import LoginManager
+from datetime import timedelta
+
+from models.user_model import db, User
 from routes.user_routes import user_bp
+from routes.auth_routes import auth_bp
+from routes.protected_routes import protected_bp
 from views.user_views import list_users
 from flask_migrate import Migrate
 app = Flask(__name__)
@@ -10,7 +15,8 @@ app = Flask(__name__)
 from config.conf import Config
 # Load the configuration
 app.config.from_object(Config)
-
+# Set session lifetime (e.g., 30 minutes)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 
 # Initialize the database
@@ -29,6 +35,17 @@ app.register_blueprint(user_bp)
 #POST /create_user
 #GET /users
 #############################################
+app.register_blueprint(auth_bp)
+app.register_blueprint(protected_bp)
+
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# User loader callback
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 # Route to render the user list view
 @app.route('/show_users')
