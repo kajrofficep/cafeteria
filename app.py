@@ -8,6 +8,8 @@ from routes.auth_routes import auth_bp
 from routes.protected_routes import protected_bp
 from routes.admin_routes import admin_bp
 from routes.moderator_routes import moderator_bp
+from routes.profile_routes import profile_bp  # Import the profile Blueprint
+
 from views.user_views import list_users
 from flask_migrate import Migrate
 app = Flask(__name__)
@@ -41,6 +43,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(protected_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(moderator_bp)
+app.register_blueprint(profile_bp)  # Register the profile Blueprint
 
 
 # Initialize Flask-Login
@@ -57,10 +60,10 @@ def load_user(user_id):
 def show_users():
     return list_users()
 
-@app.route('/profile')
-@login_required
-def profile():
-    return f"Hello, {current_user.username}!"
+#@app.route('/profile')
+#@login_required
+#def profile():
+#    return f"Hello, {current_user.username}!"
 
 @app.route('/')
 def homepage():

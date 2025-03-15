@@ -34,3 +34,13 @@ curl -X POST http://127.0.0.1:5000/logout
 curl http://127.0.0.1:5000/admin
 curl http://127.0.0.1:5000/moderator
 ```
+
+```markdown
+curl http://127.0.0.1:5000/profile
+```
+
+```markdown
+curl -X PUT http://127.0.0.1:5000/profile/update \
+-H "Content-Type: application/json" \
+-d '{"full_name": "Updated Name", "email": "updated@example.com"}'
+```
