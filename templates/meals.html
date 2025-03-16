@@ -32,16 +32,51 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .meal-form button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
         .meal-form button:hover {
             background-color: #218838;
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-messages .flash {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .flash-messages .flash.error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .flash-messages .flash.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
         }
     </style>
 </head>
 <body>
     <h1>Meal Planner</h1>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
     <form class="meal-form" method="POST" action="{{ url_for('meal.meals') }}">
-        <label for="meal_date">Date:</label>
-        <input type="date" id="meal_date" name="meal_date" required>
+        <label for="meal_date">Date (Today to {{ (date.today() + timedelta(days=3)).strftime('%Y-%m-%d') }}):</label>
+        <input type="date" id="meal_date" name="meal_date"
+               min="{{ date.today().strftime('%Y-%m-%d') }}"
+               max="{{ (date.today() + timedelta(days=3)).strftime('%Y-%m-%d') }}"
+               required>
 
         <label for="breakfast">Breakfast:</label>
         <input type="checkbox" id="breakfast" name="breakfast">
@@ -61,7 +96,7 @@
         <label for="dinner_rate">Dinner Rate:</label>
         <input type="number" id="dinner_rate" name="dinner_rate" value="200" min="0">
 
-        <button type="submit">Add/Update Meal</button>
+        <button type="submit" id="submit-btn">Add/Update Meal</button>
     </form>
 
     <h2>Meals for Today and Next 3 Days</h2>
@@ -105,5 +140,59 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        // Function to check if the current time is within the allowed time limit for the given meal type
+        function is_within_time_limit(meal_type) {
+            const now = new Date();
+            const current_time = now.getHours() * 60 + now.getMinutes(); // Convert to minutes
+
+            if (meal_type === 'breakfast' && current_time >= 7 * 60) { // After 7 AM
+                return false;
+            } else if (meal_type === 'lunch' && current_time >= 11 * 60) { // After 11 AM
+                return false;
+            } else if (meal_type === 'dinner' && current_time >= 14 * 60) { // After 2 PM
+                return false;
+            }
+            return true;
+        }
+
+        // Function to enable/disable the submit button based on the selected meal type and current time
+        function update_button_state() {
+            const breakfast = document.getElementById('breakfast').checked;
+            const lunch = document.getElementById('lunch').checked;
+            const dinner = document.getElementById('dinner').checked;
+            const meal_date = document.getElementById('meal_date').value;
+            const current_date = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+            let is_enabled = true;
+
+            // Check if the selected date is today
+            if (meal_date === current_date) {
+                if (breakfast && !is_within_time_limit('breakfast')) {
+                    is_enabled = false;
+                }
+                if (lunch && !is_within_time_limit('lunch')) {
+                    is_enabled = false;
+                }
+                if (dinner && !is_within_time_limit('dinner')) {
+                    is_enabled = false;
+                }
+            }
+
+            // Enable/disable the submit button
+            const submit_btn = document.getElementById('submit-btn');
+            submit_btn.disabled = !is_enabled;
+        }
+
+        // Add event listeners to checkboxes and date input
+        document.getElementById('breakfast').addEventListener('change', update_button_state);
+        document.getElementById('lunch').addEventListener('change', update_button_state);
+        document.getElementById('dinner').addEventListener('change', update_button_state);
+        document.getElementById('meal_date').addEventListener('change', update_button_state);
+
+        // Initialize button state on page load
+        update_button_state();
+    </script>
 </body>
 </html>
