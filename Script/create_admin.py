@@ -13,11 +13,11 @@ def create_admin_user():
 
         # Create a new admin user
         admin = User(
-            username='farjad',
+            username='farjads',
             full_name='Farjad Ullah',
             department='WEB',
-            email='farjad@quantummethod.org.bd',
-            phone='01829983101',
+            email='kmfarjadullah@gmail.com',
+            phone='018299831011',
             role='admin'  # Set the role to 'admin'
         )
         admin.set_password('admin_password')  # Hash the password
@@ -28,5 +28,6 @@ def create_admin_user():
 
         print("Admin user created successfully!")
 
-if __name__ == '__main__':
-    create_admin_user()
+#if __name__ == '__main__':
+    #create_admin_user()
+    #print('script are okey')

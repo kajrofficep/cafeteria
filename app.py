@@ -9,6 +9,7 @@ from routes.protected_routes import protected_bp
 from routes.admin_routes import admin_bp
 from routes.moderator_routes import moderator_bp
 from routes.profile_routes import profile_bp  # Import the profile Blueprint
+from routes.admin_routes import admin_bp  # Import the admin Blueprint
 
 from views.user_views import list_users
 from flask_migrate import Migrate
@@ -41,9 +42,9 @@ app.register_blueprint(user_bp)
 #############################################
 app.register_blueprint(auth_bp)
 app.register_blueprint(protected_bp)
-app.register_blueprint(admin_bp)
 app.register_blueprint(moderator_bp)
 app.register_blueprint(profile_bp)  # Register the profile Blueprint
+app.register_blueprint(admin_bp)  # Register the admin Blueprint
 
 
 # Initialize Flask-Login
@@ -72,6 +73,11 @@ def homepage():
     additional_info = "This is a Flask app with Jinja templating."
     return render_template('index.html', message_ver_homepage=message,additional_info_var_hompepage=additional_info)
 
+# # Create the database tables
+# with app.app_context():
+#     db.create_all()
+#     print("Database tables created successfully!")
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
