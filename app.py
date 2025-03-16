@@ -2,14 +2,15 @@ from flask import Flask, render_template
 from flask_login import LoginManager, current_user, login_required
 from datetime import timedelta
 
-from models.user_model import db, User
+from models.user_model import db, User, Meal
 from routes.user_routes import user_bp
 from routes.auth_routes import auth_bp
 from routes.protected_routes import protected_bp
-from routes.admin_routes import admin_bp
 from routes.moderator_routes import moderator_bp
 from routes.profile_routes import profile_bp  # Import the profile Blueprint
 from routes.admin_routes import admin_bp  # Import the admin Blueprint
+from routes.meal_routes import meal_bp  # Import the meal Blueprint
+
 
 from views.user_views import list_users
 from flask_migrate import Migrate
@@ -45,6 +46,8 @@ app.register_blueprint(protected_bp)
 app.register_blueprint(moderator_bp)
 app.register_blueprint(profile_bp)  # Register the profile Blueprint
 app.register_blueprint(admin_bp)  # Register the admin Blueprint
+app.register_blueprint(meal_bp)  # Register the meal Blueprint
+
 
 
 # Initialize Flask-Login

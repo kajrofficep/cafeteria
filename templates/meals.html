@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .meal-form {
+            margin-bottom: 20px;
+        }
+        .meal-form input, .meal-form select {
+            padding: 5px;
+            margin-right: 10px;
+        }
+        .meal-form button {
+            padding: 5px 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .meal-form button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meal Planner</h1>
+    <form class="meal-form" method="POST" action="{{ url_for('meal.meals') }}">
+        <label for="meal_date">Date:</label>
+        <input type="date" id="meal_date" name="meal_date" required>
+
+        <label for="breakfast">Breakfast:</label>
+        <input type="checkbox" id="breakfast" name="breakfast">
+
+        <label for="breakfast_rate">Breakfast Rate:</label>
+        <input type="number" id="breakfast_rate" name="breakfast_rate" value="100" min="0">
+
+        <label for="lunch">Lunch:</label>
+        <input type="checkbox" id="lunch" name="lunch">
+
+        <label for="lunch_rate">Lunch Rate:</label>
+        <input type="number" id="lunch_rate" name="lunch_rate" value="150" min="0">
+
+        <label for="dinner">Dinner:</label>
+        <input type="checkbox" id="dinner" name="dinner">
+
+        <label for="dinner_rate">Dinner Rate:</label>
+        <input type="number" id="dinner_rate" name="dinner_rate" value="200" min="0">
+
+        <button type="submit">Add/Update Meal</button>
+    </form>
+
+    <h2>Meals for Today and Next 3 Days</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+                <th>Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meal in meals %}
+            <tr>
+                <td>{{ meal.meal_date }}</td>
+                <td>
+                    {% if meal.breakfast %}
+                        Yes ({{ meal.breakfast_rate }})
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    {% if meal.lunch %}
+                        Yes ({{ meal.lunch_rate }})
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    {% if meal.dinner %}
+                        Yes ({{ meal.dinner_rate }})
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>{{ meal.total_cost }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

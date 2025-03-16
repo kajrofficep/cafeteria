@@ -43,8 +43,8 @@
                 <th>Username</th>
                 <th>Full Name</th>
                 <th>Email</th>
+                <th>Current Role</th>
                 <th>Role</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -53,6 +53,7 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.full_name }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
                 <td>
                     <form action="{{ url_for('admin.admin_users') }}" method="POST" style="display: inline;">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
