@@ -48,3 +48,12 @@ curl -X PUT http://127.0.0.1:5000/profile/update \
 curl -X PUT http://127.0.0.1:5000/profile \
 -H "Content-Type: application/json" \
 -d '{"new_password": "new_secure_password"}'
+
+```markdown
+curl http://127.0.0.1:5000/admin/profile/2
+
+```
+
+```markdown
+http://127.0.0.1:5000/admin/users
+```

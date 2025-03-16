@@ -30,4 +30,4 @@ def create_admin_user():
 
 #if __name__ == '__main__':
     #create_admin_user()
-    #print('script are okey')
+    #print('script are okey'far)
